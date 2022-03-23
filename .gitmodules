@@ -1,0 +1,4 @@
+[submodule "secp256k1"]
+	path = secp256k1
+	url = https://github.com/siv2r/secp256k1.git
+	branch = batch-verify
