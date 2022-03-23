@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <secp256k1.h> // for SECP256K1_INLINE macro
 
-#include "scalar.h"
+// #include "scalar.h"
 #include "scalar_impl.h"
 
 void print_hex(const unsigned char *buf, size_t n) {
@@ -16,6 +16,7 @@ void print_hex(const unsigned char *buf, size_t n) {
     printf("\n");
 }
 
+//TODO: include -c89 flag during compilation
 int main() {
     secp256k1_scalar sc =
         SECP256K1_SCALAR_CONST(0xF3F148DB, 0xF94B1BCA, 0xEE189630, 0x6141F319,
