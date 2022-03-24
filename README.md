@@ -21,3 +21,6 @@ Make sure the following in final implementation.
 - Batch object needs to be opaque in final impl
 - Modify libsecp256k1 build to support a new API
 
+Scratch Space Notes
+---
+- After allocating memory block in scratch (int* ptr = scratch_alloc(10)) don't use `scratch->data` to access the value, use only `ptr`

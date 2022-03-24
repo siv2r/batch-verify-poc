@@ -5,11 +5,14 @@
 
 #include "scratch.h"
 
-typedef struct {
-    secp256k1_scratch *data;
-    size_t len;
-    size_t capacity;
-    int result;
-} batch_struct;
+typedef struct batch_struct batch;
+
+batch* create(size_t n) {
+    
+}
+
+void destroy(batch *inp) {
+    
+}
 
 #endif
