@@ -6,14 +6,14 @@ CPPFLAGS += -I./secp256k1/include -I./secp256k1/src
 # LDFLAGS += -L../secp256k1/.libs
 # LDLIBS += -lsecp256k1
 
-BINS = main
+BINS = main scratch
 
 all: $(BINS)
 
-main: main.o
+%: %.o
 	$(CC) $(LDFLAGS) $< $(LDLIBS) -o $@
 
-main.o: main.c
+%.o: %.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 clean:

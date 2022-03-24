@@ -24,3 +24,4 @@ Make sure the following in final implementation.
 Scratch Space Notes
 ---
 - After allocating memory block in scratch (int* ptr = scratch_alloc(10)) don't use `scratch->data` to access the value, use only `ptr`
+- [void points in C](https://www.geeksforgeeks.org/void-pointer-c-cpp/)
