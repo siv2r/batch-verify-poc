@@ -64,4 +64,24 @@ void hex_str_to_buf(unsigned char *out, int out_len, const unsigned char *inp, i
 
     /*TODO: verify that `out` val is correct? */
 }
+
+void print_fe(secp256k1_fe *inp) {
+    unsigned char buf[32];
+    secp256k1_fe_get_b32(buf, inp);
+    print_hex(buf, 32);
+}
+
+void print_ge(secp256k1_ge *inp) {
+    printf("x: ");
+    print_fe(&inp->x);
+    printf("y: ");
+    print_fe(&inp->y);
+}
+
+void print_scalar(secp256k1_scalar *inp) {
+    unsigned char buf[32];
+    secp256k1_scalar_get_b32(buf, inp);
+    print_hex(buf, 32);
+}
+
 #endif

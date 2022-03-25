@@ -1,12 +1,12 @@
 CC = gcc
-CFLAGS = -g -Wall -DSECP256K1_WIDEMUL_INT128 # last flag is only required if you
+CFLAGS = -g -Wall -DSECP256K1_WIDEMUL_INT128 # last flag is required for `secp256k1_scalar`
 CPPFLAGS += -I./secp256k1/include -I./secp256k1/src
 
 # uncomment the code below if you need any libsecp256k1 API
 # LDFLAGS += -L../secp256k1/.libs
 # LDLIBS += -lsecp256k1
 
-BINS = main scratch
+BINS = scratch
 
 all: $(BINS)
 
