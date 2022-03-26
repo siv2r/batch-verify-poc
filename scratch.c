@@ -10,10 +10,10 @@
 #include "debug.h"
 
 #define POINTS 3
-#define POINTS_SIZE (sizeof(secp256k1_ge) + sizeof(secp256k1_scalar))
+#define POINT_SIZE (sizeof(secp256k1_ge) + sizeof(secp256k1_scalar))
 #define SCRATCH_OBJECTS 2 // no of scratch objects allocated on scratch => (points, scalars)
 #define EXTRA_SPACE (16 * SCRATCH_OBJECTS)
-#define SCRATCH_MAX_SIZE ((POINTS * POINTS_SIZE) + (EXTRA_SPACE))
+#define SCRATCH_MAX_SIZE ((POINTS * POINT_SIZE) + (EXTRA_SPACE))
 
 //TODO: include -c89 flag during compilation
 int main() {
@@ -21,6 +21,8 @@ int main() {
     secp256k1_scalar arr_sc[3] = {secp256k1_scalar_one, secp256k1_scalar_one, secp256k1_scalar_one};
 
     secp256k1_scratch *scratch = secp256k1_scratch_create(NULL, SCRATCH_MAX_SIZE);
+    const size_t max_points_alloc = secp256k1_scratch_max_allocation(NULL, scratch, SCRATCH_OBJECTS) / POINT_SIZE;
+    printf("Max number of POINTS allocation allowed: %lu\n", max_points_alloc);
     /* store checkpoint before allocating the data */
     const size_t scratch_checkpoint = secp256k1_scratch_checkpoint(NULL, scratch);
     /* allocates data for 3 (scalar, point) tuples*/
@@ -29,6 +31,7 @@ int main() {
     /* revert to old checkpoint, if allocation fails */
     if (points == NULL || scalars == NULL) {
         secp256k1_scratch_apply_checkpoint(NULL, scratch, scratch_checkpoint);
+        printf("Exceeded maximum possible allocation...\n");
         return 0;
     }
 
