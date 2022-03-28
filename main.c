@@ -20,6 +20,10 @@ int main() {
     }
     /* print batch object value */
     print_batch(ctx);
+    //todo: build ecmult_context
+    //todo: put sc_g = -3
+    //todo: call batch_verify
+    //todo: result should be 0
     printf("destroying context object...\n");
     batch_context_destroy(ctx);
 }

@@ -83,6 +83,12 @@ int batch_add_xonly_pubkey_tweak_check(batch *ctx, const unsigned char *tweaked_
 }
 
 int batch_verify(batch *ctx) {
+    //todo: check for ecmult_context being built
+    //todo: refactor emcult_strauss_batch to detect partially filled scratch
+            //- write a new refactored function
+            //- remove cb, cb_data, cb_offset args
+            //- add if statement before point, scalar mem alloc
+            //- comment out the for loop
     //todo: call secp256k1_ecmult_strauss_batch()
 }
 
