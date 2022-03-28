@@ -62,7 +62,7 @@ void hex_str_to_buf(unsigned char *out, int out_len, const unsigned char *inp, i
         j++;
     }
 
-    /*TODO: verify that `out` val is correct? */
+    //todo: verify that `out` val is correct?
 }
 
 void print_fe(secp256k1_fe *inp) {
