@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include<assert.h>
+#include <assert.h>
 #include <secp256k1.h> // for SECP256K1_INLINE macro
 
 #include "scratch_impl.h"
@@ -17,7 +17,8 @@
 #include "precomputed_ecmult.h" // for WINDOW_G ECMULT_WINDOW_SIZE
 #include "ecmult_impl.h"
 
-#include "batch.h"
+#include "secp256k1_extrakeys.h"
+// #include "batch.h"
 
 typedef struct batch_struct{
     secp256k1_scratch *data;
@@ -92,6 +93,36 @@ void batch_context_destroy (batch *ctx) {
     ctx->scalars = NULL;
     ctx->points = NULL;
     ctx->len = ctx->capacity = ctx->result = 0;
+}
+
+
+int batch_add_one_term(batch *ctx, const secp256k1_scalar *sc, const secp256k1_ge *pt) {
+    if (ctx->len == ctx->capacity) {
+        /* run the batch_verify algorithm if scratch is full */
+        batch_verify(ctx);
+        //todo: exit if batch_verify fails?
+    }
+    int i = ctx->len;
+    secp256k1_scalar_cmov(&ctx->scalars[i], sc, 1); /* alternative for this? */
+    secp256k1_gej_set_ge(&ctx->points[i], pt);
+    ctx->len += 1;
+    return 1;
+}
+
+void print_batch(batch *inp) {
+    printf("length  : %lu\n", inp->len);
+    printf("capacity: %lu\n", inp->capacity);
+    printf("result: %lu\n\n", inp->result);
+    for (int i = 0; i < inp->len; i++) {
+        printf("scalar_%d:\n", i);
+        print_scalar(&inp->scalars[i]);
+    }
+    printf("\n");
+    for (int i = 0; i < inp->len; i++) {
+        printf("point_%d:\n", i);
+        print_gej(&inp->points[i]);
+    }
+    printf("\n");
 }
 
 #endif

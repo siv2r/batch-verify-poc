@@ -78,10 +78,20 @@ void print_ge(secp256k1_ge *inp) {
     print_fe(&inp->y);
 }
 
+void print_gej(secp256k1_gej *inp) {
+    printf("x: ");
+    print_fe(&inp->x);
+    printf("y: ");
+    print_fe(&inp->y);
+    printf("z: ");
+    print_fe(&inp->z);
+}
+
 void print_scalar(secp256k1_scalar *inp) {
     unsigned char buf[32];
     secp256k1_scalar_get_b32(buf, inp);
     print_hex(buf, 32);
 }
+
 
 #endif
