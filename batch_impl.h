@@ -24,6 +24,8 @@ typedef struct batch_struct{
     secp256k1_scratch *data;
     secp256k1_gej *points;
     secp256k1_scalar *scalars;
+    secp256k1_scalar sc_g;
+    secp256k1_gej res_gej;
     size_t len;
     size_t capacity;
     int result;
@@ -57,7 +59,9 @@ batch* batch_context_create(size_t n) {
         printf("(scalar, point) memory allocation failed!\n");
         return NULL;
     }
-
+    /* set scalar of g to 0 */
+    secp256k1_scalar_clear(&ret->sc_g);
+    //todo: intial value for result_gej?
     ret->len = 0;
     ret->capacity = n;
     ret->result = 0;
@@ -83,13 +87,9 @@ int batch_add_xonly_pubkey_tweak_check(batch *ctx, const unsigned char *tweaked_
 }
 
 int batch_verify(batch *ctx) {
-    //todo: check for ecmult_context being built
-    //todo: refactor emcult_strauss_batch to detect partially filled scratch
-            //- write a new refactored function
-            //- remove cb, cb_data, cb_offset args
-            //- add if statement before point, scalar mem alloc
-            //- comment out the for loop
-    //todo: call secp256k1_ecmult_strauss_batch()
+    //todo: && with is_gej_infinity()
+    ctx->result = secp256k1_ecmult_strauss_batch(NULL, ctx->data, ctx->scalars, ctx->points, &ctx->res_gej, &ctx->sc_g, NULL, NULL, ctx->len, 0);
+    return ctx->result;
 }
 
 void batch_context_destroy (batch *ctx) {
@@ -98,6 +98,8 @@ void batch_context_destroy (batch *ctx) {
     }
     ctx->scalars = NULL;
     ctx->points = NULL;
+    secp256k1_scalar_clear(&ctx->sc_g);
+    secp256k1_gej_clear(&ctx->result); //won't the result of batch_verify be also 0?
     ctx->len = ctx->capacity = ctx->result = 0;
 }
 
@@ -106,6 +108,8 @@ int batch_add_one_term(batch *ctx, const secp256k1_scalar *sc, const secp256k1_g
     if (ctx->len == ctx->capacity) {
         /* run the batch_verify algorithm if scratch is full */
         batch_verify(ctx);
+        //todo: print to the command line
+        //todo: clear out the scratch space
         //todo: exit if batch_verify fails?
     }
     int i = ctx->len;
