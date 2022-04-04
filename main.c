@@ -9,7 +9,7 @@
 
 #define POINTS 3
 //todo: write a wrapper func on printf for this
-#define DEBUG 1 // make this 1 to print debug information
+#define DEBUG 0 // make this 1 to print debug information
 
 /* checks if 0 ?= -3G + 1G + 1G + 1G */
 //todo: why malloc fails if both tests created their own batch object?
@@ -21,6 +21,7 @@ void test1(batch *ctx) {
     assert(batch_verify(ctx));
     /* check if the res_gej = indentity elem */
     assert(secp256k1_gej_is_infinity(&ctx->res_gej));
+    printf("Test1 success!!\n");
 }
 
 /* checks if 3G ?= 0G + 1G + 1G + 1G */
@@ -35,11 +36,16 @@ void test2(batch *ctx) {
     secp256k1_ge_set_gej(&calculated, &ctx->res_gej);
     assert(secp256k1_ge_is_valid_var(&expected));
     assert(secp256k1_ge_is_valid_var(&calculated));
-    printf("Expected Result:\n");
-    print_ge(&expected);
-    printf("\nCalcuated Result:\n");
-    print_ge(&calculated);
-    printf("\n");
+    assert(secp256k1_fe_equal_var(&expected.x, &calculated.x));
+    assert(secp256k1_fe_equal_var(&expected.y, &calculated.y));
+    if (DEBUG) {
+        printf("Expected Result:\n");
+        print_ge(&expected);
+        printf("\nCalcuated Result:\n");
+        print_ge(&calculated);
+        printf("\n");
+    }
+    printf("Test2 success!!\n");
 }
 
 int main() {
