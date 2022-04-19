@@ -75,11 +75,11 @@ make
 Checklist
 ---
 Make sure the following are in the final implementation.  
-[] Batch object needs to be opaque in the final impl  
-[] Modify libsecp256k1 build to support a new API  
-[] Generate randomizers  
-[] In `batch_context_create()` if user gives `n` allocate `2n` points space (different from this PoC)  
-[] In `batch_add_one_term`, transparently (print to terminal) run `batch_verify` is the scratch space is full 
+- [ ] Batch object needs to be opaque in the final impl  
+- [ ] Modify libsecp256k1 build to support a new API  
+- [ ] Generate randomizers  
+- [ ] In `batch_context_create()` if user gives `n` allocate `2n` points space (different from this PoC)  
+- [ ] In `batch_add_one_term`, transparently (print to terminal) run `batch_verify` if the scratch space is full 
 
 Design Decisions
 ---
